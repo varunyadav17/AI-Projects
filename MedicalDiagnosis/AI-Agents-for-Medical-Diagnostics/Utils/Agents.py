@@ -13,7 +13,7 @@ class Agent:
         # Initialize the prompt based on role and other info
         self.prompt_template = self.create_prompt_template()
         # Initialize the model
-        self.model = ChatOpenAI(temperature=0, model="gpt-4`", api_key=os.getenv("OPENAI_API_KEY"))
+        self.model = ChatOpenAI(temperature=0, model="gpt-3.5-turbo", api_key=os.getenv("OPENAI_API_KEY"))
 
     def create_prompt_template(self):
         if self.role == "MultidisciplinaryTeam":
