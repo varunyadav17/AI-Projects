@@ -1,5 +1,9 @@
+import os
+from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
+
+load_dotenv('apikey.env')
 
 class Agent:
     def __init__(self, medical_report=None, role=None, extra_info=None):
@@ -9,7 +13,7 @@ class Agent:
         # Initialize the prompt based on role and other info
         self.prompt_template = self.create_prompt_template()
         # Initialize the model
-        self.model = ChatOpenAI(temperature=0, model="gpt-4o")
+        self.model = ChatOpenAI(temperature=0, model="gpt-4`", api_key=os.getenv("OPENAI_API_KEY"))
 
     def create_prompt_template(self):
         if self.role == "MultidisciplinaryTeam":

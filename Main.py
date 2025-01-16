@@ -1,17 +1,12 @@
 # Importing the needed modules 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from dotenv import load_dotenv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from Utils.Agents import Cardiologist, Psychologist, Pulmonologist, MultidisciplinaryTeam
-from dotenv import load_dotenv
-import json, os
+import os
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Loading API key from a dotenv file.
-load_dotenv(dotenv_path='.env')
-
 # read the medical report
-with open("Medical Reports\Medical Rerort - Michael Johnson - Panic Attack Disorder.txt", "r") as file:
+with open("Medical Reports/Medical Rerort - Michael Johnson - Panic Attack Disorder.txt", "r") as file:
     medical_report = file.read()
 
 
