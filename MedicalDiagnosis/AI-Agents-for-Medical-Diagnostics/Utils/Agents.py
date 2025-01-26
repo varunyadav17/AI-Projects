@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 
-load_dotenv('apikey.env')
+load_dotenv("apikey.env")
+
 
 class Agent:
     def __init__(self, medical_report=None, role=None, extra_info=None):
@@ -13,7 +14,9 @@ class Agent:
         # Initialize the prompt based on role and other info
         self.prompt_template = self.create_prompt_template()
         # Initialize the model
-        self.model = ChatOpenAI(temperature=0, model="gpt-3.5-turbo", api_key=os.getenv("OPENAI_API_KEY"))
+        self.model = ChatOpenAI(
+            temperature=0, model="gpt-3.5-turbo", api_key=os.getenv("OPENAI_API_KEY")
+        )
 
     def create_prompt_template(self):
         if self.role == "MultidisciplinaryTeam":
@@ -52,11 +55,12 @@ class Agent:
                     Recommendation: Offer guidance on how to address these respiratory concerns, including pulmonary function tests, imaging studies, or other interventions.
                     Please only return the possible respiratory issues and the recommended next steps.
                     Patient's Report: {medical_report}
-                """
+                """,
             }
-        templates = templates[self.role]
+        if isinstance(templates, dict):
+            templates = templates[self.role]
         return PromptTemplate.from_template(templates)
-    
+
     def run(self):
         print(f"{self.role} is running...")
         prompt = self.prompt_template.format(medical_report=self.medical_report)
@@ -67,24 +71,28 @@ class Agent:
             print("Error occurred:", e)
             return None
 
+
 # Define specialized agent classes
 class Cardiologist(Agent):
     def __init__(self, medical_report):
         super().__init__(medical_report, "Cardiologist")
 
+
 class Psychologist(Agent):
     def __init__(self, medical_report):
         super().__init__(medical_report, "Psychologist")
 
+
 class Pulmonologist(Agent):
     def __init__(self, medical_report):
         super().__init__(medical_report, "Pulmonologist")
+
 
 class MultidisciplinaryTeam(Agent):
     def __init__(self, cardiologist_report, psychologist_report, pulmonologist_report):
         extra_info = {
             "cardiologist_report": cardiologist_report,
             "psychologist_report": psychologist_report,
-            "pulmonologist_report": pulmonologist_report
+            "pulmonologist_report": pulmonologist_report,
         }
         super().__init__(role="MultidisciplinaryTeam", extra_info=extra_info)
